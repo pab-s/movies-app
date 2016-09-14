@@ -1,9 +1,10 @@
 
 var moviesArray = [];
-var movieObj = $('tbody').children();
-console.log(movieObj.length + movieObj.children().html());
-var btnRow  = '<span class="btnDelete btn btn-xs btn-danger lyphicon glyphicon-minus"></span>';
-
+var btnRow = $('<span class="btnDelete btn btn-xs btn-danger lyphicon glyphicon-minus"></span>');
+function movieObj(mov, dir) {
+  this.movie = mov;
+  this.director = dir;
+}
 
 $('#submit').click(function() {
   var movie = $('#title').val();
@@ -11,20 +12,24 @@ $('#submit').click(function() {
   if(movie.length == 0 || director.length == 0) {
     console.log('wrong');
   } else {
-    $('table > tbody:last-child').append(
-      '<tr><td>' + movie + '</td><td>' + director + '</td><td>' + btnRow + '</td></tr>');
-    removeBtn();
-    console.log(movie + " " + director);
-
-    }
+    $('table > tbody:last-child').append('<tr><td>' + movie + '</td><td>' + director + '</td><td></td></tr>');
+    $('tbody td:last-child').append(btnRow);
+    popCall();
+    var newMovie = new movieObj(movie, director);
+    moviesArray.push(newMovie);
+    console.log(newMovie);
+    console.log(moviesArray);
+    // erase text from input popup
+    $('#title').val("");
+    $('#director').val("");
+  }
 
 });
 
-
-function removeBtn() {
+// call event listener for delete btn
+function popCall() {
   $('.btnDelete').click(function() {
-    $(this).parent().parent().remove();
+    $('#modalPop').modal('show');
+
   });
 }
-
-removeBtn();
